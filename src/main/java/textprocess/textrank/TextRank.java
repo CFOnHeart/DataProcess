@@ -45,6 +45,7 @@ public class TextRank {
         // 初始化所有词都是平均的
         List<Double> weights = new ArrayList<Double>();
         List<Double> tmp = new ArrayList<Double>();
+        System.out.println("graph.getWordId()"+graph.getWordId());
         for(int i=0 ; i<graph.getWordId() ; i++){
             weights.add(1.0 / graph.getWordId());
             tmp.add(0.0);
@@ -166,10 +167,7 @@ public class TextRank {
     }
 
     public static void main(String [] args){
-        String documents = "程序员(英文Programmer)是从事程序开发、\n" +
-                "维护的专业人员。一般将程序员分为程序设计人员和程序编码人员，\n" +
-                "但两者的界限并不非常清楚，特别是在中国。软件从业人员分为初级程序员、高级程\n" +
-                "序员、系统分析员和项目经理四大类。";
+        String documents = "通过物资扶持，技术扶持，技能培训等帮扶措施，综合政策，实现脱贫。";
         List<String> keys = topKWords(documents, 5);
         for(String key : keys){
             System.out.println(key);

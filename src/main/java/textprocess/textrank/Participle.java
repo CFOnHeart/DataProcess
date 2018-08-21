@@ -26,7 +26,7 @@ public class Participle {
             String line;
             String tail = "";
             while((line = br.readLine()) != null){
-                String [] strs = line.split("？|。|\\?|\\.|,|：|:"); // 设置分隔符，可扩展
+                String [] strs = line.split("\\.|？|。|\\?|\\.|,|，|：|:|、|~|-|=|\\+|-|>|<|$|#|@|!|！|^|%|&|\\*|￥|（|）|\\{|}|【|】"); // 设置分隔符，可扩展
                 List<String> doc = new ArrayList<String>();
                 for(String str: strs){
                     doc.add(str);
@@ -78,9 +78,10 @@ public class Participle {
     // 增加功能，文本内容从数据库中已经读出
     public static List<String> sentenceParticipleByMysql(String document){
         List<String> sentences = new ArrayList<String>();
+        System.out.println("sentenceParticipleByMysql: "+document);
         try{
 
-            String [] strs = document.split("？|。|\\?|\\.|,|：|:"); // 设置分隔符，可扩展
+            String [] strs = document.split("\\.|？|。|\\?|\\.|,|，|：|:|、|~|-|=|\\+|-|>|<|$|#|@|!|！|^|%|&|\\*|￥|（|）|\\{|}|【|】"); // 设置分隔符，可扩展
             List<String> doc = new ArrayList<String>();
             for(String str: strs){
                 doc.add(str);

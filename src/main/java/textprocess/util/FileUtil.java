@@ -27,7 +27,7 @@ public class FileUtil {
     }
 
     public static Set<String> stopWords = new HashSet<String>();
-    public static String stopWordsPath = "src/main/java/com/iip/datafusion/backend/textprocess/resource/stopwords";
+    public static String stopWordsPath = "src/main/java/textprocess/resource/stopwords";
     // 获得某个路径下的所有文件，包括所有子文件下的文件，递归查找，使用方法就是getAllFilePath(new ArrayList<>() , dir_path)
     public static List<File> getAllFilePath(List<File> files , String dirPath){
         File file = new File(dirPath);  //File can represent as file or directory

@@ -12,23 +12,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: com.hankcs:hanlp:portable-1.5.3" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: lucene:core:3.4.0">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/main/resources/lib/lucene-core-3.4.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: lucene:ikanalyzer:2012">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/main/resources/lib/IKAnalyzer-2012.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Maven: org.python:jython:2.7.0" level="project" />
   </component>
 </module>
