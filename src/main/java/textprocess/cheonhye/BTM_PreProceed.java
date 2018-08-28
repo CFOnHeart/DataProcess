@@ -1,7 +1,5 @@
 package textprocess.cheonhye;
 
-import textprocess.util.FileUtil;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,41 +7,25 @@ import java.util.Vector;
 
 public class BTM_PreProceed {
 
-    //    public static List<String> toNormal(String dirc) throws IOException{
-//
-//
-//        List<String> filelist = FileUtil.getAllFilePath(dirc);
-//        BufferedWriter bw = new BufferedWriter(
-//                new OutputStreamWriter(new FileOutputStream(new File("./toNormal.txt")), "UTF-8"));
-//
-//        for(String file : filelist){
-//            ArrayList<String> cutwords = TF_IDF.cutWords(file); //get cut words for one file
-//            for(String word: cutwords){
-//                bw.write(word);
-//                bw.write(" ");
-//            }
-//            bw.newLine();
-//        }
-//        bw.close();
-//        return filelist;
-//    }
-    public static void toNormal_new(String text) throws IOException{
+        public static List<String> toNormal(List<String> input) throws IOException{
 
 
-//        List<String> filelist = FileUtil.getAllFilePath(dirc);
+        //List<String> filelist = textprocess.util.FileUtil.getAllFilePath(dirc);
         BufferedWriter bw = new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(new File("./toNormal.txt")), "UTF-8"));
 
-//        for(String file : filelist){
-        ArrayList<String> cutwords = TF_IDF.cutWords_new(text); //get cut words for one file
-        for(String word: cutwords){
-            bw.write(word);
-            bw.write(" ");
+        for(String file : input){
+            ArrayList<String> cutwords = TF_IDF.cutWords(file); //get cut words for one file
+            for(String word: cutwords){
+                bw.write(word);
+                bw.write(" ");
+            }
+            bw.newLine();
         }
-        bw.newLine();
-//        }
         bw.close();
+        return input;
     }
+
     // 下方是为了辅助给从数据库读取的数据集功能进行主题模型的
     public static List<String> toNormalByDocuments(Vector<Vector<String>> documents) throws IOException{
 

@@ -17,23 +17,13 @@ public class BTM  {
     private final int iter_num;
     private final int topic_num;
     private final String outputPath;
-
     private HashMap<String, Integer> wordMap = new HashMap<String, Integer>();
     private HashMap<Integer, String> id2Word = new HashMap<Integer, String>();
     private int worMapSize = 0;
-
     private int[][] wordId_of_corpus = null;
-    //    private int[][] topicId_of_corpus = null;
-//
-//    private int[][] word_num_in_topic_word = null;
-//    private int[] word_num_in_topic = null;
-//    private int[][] word_num_in_doc_topic = null;
-//    private int[] word_num_in_doc = null;
     ArrayList<HashMap<Long, Integer>> biterm_of_corpus = new ArrayList<HashMap<Long, Integer>>();
     int[] doc_biterm_num ;
     ArrayList<Long> biterms = new ArrayList<Long>();
-
-
     private int[] topic_of_biterms;
     private int[][] topic_word_num;
     private int[] num_of_topic_of_biterm;
@@ -41,13 +31,12 @@ public class BTM  {
     private HashMap<Long, Double> bitermSum = new HashMap<Long, Double>();
 
     public BTM(String data_path, int topic_num, int iter_num, double alpha, double beta, int instanceNum) {
-
         this.alpha = alpha;
         this.beta = beta;
         this.iter_num = iter_num;
         this.topic_num = topic_num;
         this.data_path = data_path;
-        this.outputPath = "./BTM_output/" ;
+        this.outputPath = "./BTM_output/";
         System.out.println("BTM_outputPath:"+this.outputPath);
         (new File(this.outputPath)).mkdirs();
         print_parameter();
@@ -165,6 +154,7 @@ public class BTM  {
     }
 
     private void save_twords(int topWordNum) throws IOException {
+
         BufferedWriter writer = getWriter(this.outputPath + "model-final_twords.txt");
 
         for (int topic_id = 0; topic_id < this.topic_num; topic_id++) {
@@ -230,13 +220,12 @@ public class BTM  {
 
 
 
-    private List<String> save_theta() throws IOException {
-
+    private Map<Integer,List<String>> save_theta(List<String> input) throws IOException {
+        Map<Integer,List<String>>output =new HashMap<Integer,List<String>>();
         BufferedWriter writer = getWriter(this.outputPath + "model-final_theta.txt");
         int docIndex = 0;
-        List<String> list=new ArrayList<String>();
-
         for (HashMap<Long,Integer> line : this.biterm_of_corpus) {
+            List<String> list=new ArrayList<String>();
             double[] oneTheta = new double[this.topic_num];
             for(int topic_id = 0; topic_id<this.topic_num;topic_id++) {
 
@@ -259,11 +248,12 @@ public class BTM  {
                 list.add(formatDouble(oneSum));
 
             }
+            output.put(docIndex,list);
             writer.write("\n");
             docIndex++;
         }
         writer.close();
-        return list;
+        return output;
     }
 
     private void save_phi() throws IOException {
@@ -328,69 +318,51 @@ public class BTM  {
 
     }
 
-    private List<String> save_result()throws IOException {
+    private Map<Integer,List<String>> save_result(List<String> input)throws IOException {
 
-        List<String> list =new ArrayList<String>();
+        Map<Integer,List<String>>output =new HashMap<Integer,List<String>>();
 
         this.save_twords(20);
-        list = this.save_theta();
-//            this.save_tassign();
+        output = this.save_theta(input);
         this.save_wordMap();
         this.save_phi();
-        return list;
+        return output;
 
 
     }
 
     // @Override
-    public List<String> execute()throws IOException {
-        List<String> list =new ArrayList<String>();
+    public Map<Integer,List<String>> execute(List<String> input)throws IOException {
+        Map<Integer,List<String>>output =new HashMap<Integer,List<String>>();
         this.load_data();
         this.init_model();
         this.build_model();
-        list = this.save_result();
-        return list;
+        output = this.save_result(input);
+        return output;
     }
 
-    public static List<String> build_BTM_Model(String data_path, int topic_num, double alpha, double beta, int iter_num,  int instance_num)throws IOException
+    public static  Map<Integer,List<String>> build_BTM_Model(String data_path, int topic_num, double alpha, double beta, int iter_num,  int instance_num,List<String> input)throws IOException
     {
-        List<String> list =new ArrayList<String>();
+        Map<Integer,List<String>>output =new HashMap<Integer,List<String>>();
         BTM btm = new BTM(data_path, topic_num, iter_num, alpha, beta, instance_num);
-        list = btm.execute();
-        return list;
+        output = btm.execute(input);
+        return output;
 
     }
-    //    public static Map<String,List<String>> btm(String dirc,int tN)throws Exception{
-//        Map<String,List<String>> map =new HashMap<String,List<String>>();
-//        List<String> filelist= BTM_PreProceed.toNormal(dirc);
-//        map=build_BTM_Model("./toNormal.txt",tN,0.1,0.01,500,1,filelist);
-//        return map;
-//
-//    }
-    public static List<String> btm_new(String text,int tN)throws Exception{
-        List<String> list =new ArrayList<String>();
-        textprocess.cheonhye.BTM_PreProceed.toNormal_new(text);
-        list = build_BTM_Model("./toNormal.txt",tN,0.1,0.01,500,1);
-        return list;
+    public static  Map<Integer,List<String>> btm(List<String> input,int tN)throws Exception{
+
+        Map<Integer,List<String>>output =new HashMap<Integer,List<String>>();
+        List<String> filelist= BTM_PreProceed.toNormal(input);
+        output=build_BTM_Model("./toNormal.txt",tN,0.1,0.01,500,1,input);
+        return output;
 
     }
 
-    public static Map<String,List<String>> btmByMysql(Vector<Vector<String>> documents,int tN)throws Exception{
-
-        Map<String,List<String>> map =new HashMap<String,List<String>>();
-        for (int i = 1; i < documents.size(); i++) {
-            List<String> list = new ArrayList<String>();
-            String key = documents.get(i).get(0);
-            String text = documents.get(i).get(1);
-            list = btm_new(text,tN);
-            map.put(key,list);
-        }
-        return map;
-    }
 
     public static void main(String[] args) throws Exception{
-//        Map<String,List<String>> map =new HashMap<String,List<String>>();
         int tN=5;
+        List<String> input = new ArrayList<String>();
+        Map<Integer,List<String>> output =new HashMap<Integer,List<String>>();
         String documents = "程序员(英文Programmer)是从事程序开发、\n" +
                 "维护的专业人员。一般将程序员分为程序设计人员和程序编码人员，\n" +
                 "但两者的界限并不非常清楚，特别是在中国。软件从业人员分为初级程序员、高级程\n" +
@@ -399,11 +371,11 @@ public class BTM  {
                 "如果说许墨跳舞是研究做失败了。\n" +
                 "如果说白起跳舞是做任务做疯了。\n" +
                 "周棋洛表示：………………";
-//        map= btmByMysql(documents,tN);
-        List<String> topics = btm_new(documents, tN);
-        for (String val : topics){
-            System.out.println(val);
-        }
+        input.add(documents);
+        input.add(documents1);
+        output = btm(input,tN);
+
+        System.out.println("output:"+output);
     }
 }
 
