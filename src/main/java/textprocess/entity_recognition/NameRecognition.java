@@ -32,7 +32,7 @@ public class NameRecognition {
 
         for (int i = 0 ; i < termList.size() ; i++){
             String[] tmp = termList.get(i).toString().split("/");
-            if (tmp[tmp.length-1].equals("nr")){
+            if (tmp[tmp.length-1].equals("nr") || tmp[tmp.length-1].equals("nrf")){
                 nameList.add(tmp[0]);
             }
         }

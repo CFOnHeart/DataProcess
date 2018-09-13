@@ -27,15 +27,22 @@ public class OrganizationRecognition {
         }
 //
     }
-    // 将字符串中的所有人名实体提取出来(暂时先将整个文件所有的数据读到一起，作为一整个字符串)
+    // 将字符串中的所有机构或者地点实体提取出来(暂时先将整个文件所有的数据读到一起，作为一整个字符串)
     public static List<String> getOrganization(String s){
-        Segment segment = HanLP.newSegment().enableNameRecognize(true);
+        Segment segment = HanLP.newSegment().enableOrganizationRecognize(true);
         List<Term> termList = segment.seg(s);
         List<String> nameList = new ArrayList<String>();
 
         for (int i = 0 ; i < termList.size() ; i++){
             String[] tmp = termList.get(i).toString().split("/");
-            if (tmp[tmp.length-1].contains("ni")){
+//            System.out.println(tmp[tmp.length-1]);
+//            if (tmp[tmp.length-1].contains("ni")
+//                    || tmp[tmp.length-1].contains("nt")
+//                    || tmp[tmp.length-1].contains("ns")
+//                    || tmp[tmp.length-1].contains("nn")){
+//                nameList.add(tmp[0]);
+//            }
+            if (tmp[tmp.length-1].equals("nt")) {
                 nameList.add(tmp[0]);
             }
         }
